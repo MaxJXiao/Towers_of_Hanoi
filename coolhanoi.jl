@@ -76,7 +76,7 @@ function islegal(stacks)
 	
 	#check if we use the same disk set that we started with
 	
-	disks_in_state = sort([disk for stack in stacks for disk in stack])
+	disks_in_state = sort([disk for stack ∈ stacks for disk ∈ stack])
 	disks_complete = disks_in_state == all_disks
 	
 	order_correct && disks_complete
@@ -169,7 +169,7 @@ function run_solution(solver::Function, start = starting_stacks)
 	all_states = Array{Any,1}(undef, length(moves) + 1)
 	all_states[1] = start
 	
-	for (i, m) in enumerate(moves)
+	for (i, m) ∈ enumerate(moves)
 		try
 			all_states[i + 1] = move(all_states[i], m[1], m[2])
 		catch
@@ -194,7 +194,7 @@ function run_solution_adv(solver::Function, moo::Tuple{Int,Int})
 		all_states = Array{Any,1}(undef, length(moves) + 1)
 		all_states[1] = start
 		
-		for (i, m) in enumerate(moves)
+		for (i, m) ∈ enumerate(moves)
 			try
 				all_states[i + 1] = move(all_states[i], m[1], m[2])
 			catch
@@ -261,7 +261,7 @@ function check_solution_adv(solver::Function, moo::Tuple{Int,Int})
 			last_state = all_states[lastindex(all_states)]
 			complete = last_state == last
 			
-			all_legal# && complete
+			all_legal && complete
 		catch
 			#return false if we encountered an error
 			return false
@@ -302,7 +302,7 @@ function no_jump(disks::Int,direction::Bool)::Array{Array}
 	moves = []
 	#what to do?
 	if direction == true
-		for i in 1:disks
+		for i ∈ 1:disks
 				if i == 1
 					moves = [[1,2],[2,3]]
 				else
@@ -312,7 +312,7 @@ function no_jump(disks::Int,direction::Bool)::Array{Array}
 				end
 		end
 	else
-		for i in 1:disks
+		for i ∈ 1:disks
 			if i == 1
 				moves = [[3,2],[2,1]]
 			else
@@ -341,7 +341,7 @@ function solve(start = starting_stacks)::Array{Tuple{Int, Int}}
 	moves = []
 	#what to do?
 
-	for i in 1:num_disks
+	for i ∈ 1:num_disks
 			if i == 1
 				moves = [[1,3]]
 			else
@@ -390,7 +390,7 @@ function solving(moo::Tuple{Int,Int},start = starting_stacks)::Array{Tuple{Int, 
 			blank = 3
 		end
 		
-		for i in 1:num_disks
+		for i ∈ 1:num_disks
 				if i == 1
 					moves = [[moo[1],moo[2]]]
 				else
@@ -430,7 +430,7 @@ function no_jump_solve(start = starting_stacks)::Array{Tuple{Int, Int}}
 	moves = []
 	#what to do?
 	
-	for i in 1:num_disks
+	for i ∈ 1:num_disks
 			if i == 1
 				moves = [[1,2],[2,3]]
 			else
@@ -497,7 +497,7 @@ function no_jump_solving(moo::Tuple{Int,Int},start = starting_stacks)::Array{Tup
 		end
 		
 		if abs(moo[1]-moo[2]) == 2
-			for i in 1:num_disks
+			for i ∈ 1:num_disks
 					if i == 1
 						moves = [[moo[1],blank],[blank,moo[2]]]
 					else
@@ -507,7 +507,7 @@ function no_jump_solving(moo::Tuple{Int,Int},start = starting_stacks)::Array{Tup
 					end
 			end
 		elseif moo[1] == 2
-			for i in 1:num_disks
+			for i ∈ 1:num_disks
 				if i == 1
 					moves = [[moo[1],moo[2]]]
 				else
@@ -521,7 +521,7 @@ function no_jump_solving(moo::Tuple{Int,Int},start = starting_stacks)::Array{Tup
 				end
 			end
 		elseif moo[2] == 2
-			for i in 1:num_disks
+			for i ∈ 1:num_disks
 				if i == 1
 					moves = [[moo[1],moo[2]]]
 				else
@@ -579,7 +579,7 @@ begin
 	correct = []
 	
 	for i ∈ permutations
-		if check_solution_adv(solving,(1,1)) == true && check_solution_adv(no_jump_solving,(1,1)) == true
+		if check_solution_adv(solving,i) == true && check_solution_adv(no_jump_solving,i) == true
 			append!(correct,1)
 		end
 	end
